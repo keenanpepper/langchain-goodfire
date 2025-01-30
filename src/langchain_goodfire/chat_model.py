@@ -113,15 +113,13 @@ class ChatGoodfire(BaseChatModel):
     def _prepare_messages(
         self,
         messages: List[BaseMessage],
-        **kwargs: Any,
     ) -> tuple[List[dict], int, goodfire.Variant]:
         """Prepare messages for sending to Goodfire API."""
-        model = kwargs.pop("model", self.model)
         input_messages = format_for_goodfire(messages)
         n_input_tokens = len(
             self.tokenizer.apply_chat_template(input_messages, tokenize=True)
         )
-        return input_messages, n_input_tokens, model
+        return input_messages, n_input_tokens
 
     def _create_usage_metadata(
         self,
@@ -212,13 +210,14 @@ class ChatGoodfire(BaseChatModel):
         run_manager: Optional[AsyncCallbackManagerForLLMRun] = None,
         **kwargs: Any,
     ) -> ChatResult:
-        input_messages, n_input_tokens, model = self._prepare_messages(
-            messages, **kwargs
-        )
+        input_messages, n_input_tokens = self._prepare_messages(messages)
+
+        if "model" not in kwargs:
+            # only use the variant passed to the constructor if the caller didn't pass a variant
+            kwargs["model"] = self.model
 
         goodfire_response = await self.async_client.chat.completions.create(
             messages=input_messages,
-            model=model,
             **kwargs,
         )
 
@@ -247,13 +246,14 @@ class ChatGoodfire(BaseChatModel):
         run_manager: Optional[AsyncCallbackManagerForLLMRun] = None,
         **kwargs: Any,
     ) -> AsyncIterator[ChatGenerationChunk]:
-        input_messages, n_input_tokens, model = self._prepare_messages(
-            messages, **kwargs
-        )
+        input_messages, n_input_tokens = self._prepare_messages(messages)
+
+        if "model" not in kwargs:
+            # only use the variant passed to the constructor if the caller didn't pass a variant
+            kwargs["model"] = self.model
 
         response = await self.async_client.chat.completions.create(
             messages=input_messages,
-            model=model,
             stream=True,
             **kwargs,
         )
