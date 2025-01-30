@@ -1,6 +1,6 @@
 # LangChain Goodfire Integration
 
-This package contains the LangChain integration for the Goodfire API.
+This package contains the LangChain integration for the [Goodfire API](https://docs.goodfire.ai/).
 
 ## Installation
 
