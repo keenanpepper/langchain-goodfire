@@ -29,6 +29,15 @@ response = chat.invoke(messages)
 print(response)
 ```
 
+### Async Environment Usage
+
+When using this package in an environment with an existing event loop (**e.g., Jupyter notebook**):
+- Use the async versions of methods since an event loop is already running
+- Replace `chat.invoke(messages)` with `await chat.ainvoke(messages)`
+- Similarly, use `await chat.abatch(...)`, `await chat.astream(...)`, etc.
+
+**Technical Note:** Synchronous methods won't work in environments with an existing event loop because the Goodfire client library uses asyncio internally. When an event loop is already running, you must use async methods to properly interface with the Goodfire client library.
+
 ## Development
 
 To install the package in development mode:
@@ -44,7 +53,6 @@ Run tests using pytest:
 ```bash
 pytest tests/
 ```
-
 
 ## License
 
