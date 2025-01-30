@@ -10,7 +10,6 @@ from langchain_core.messages import AIMessage, BaseMessage, HumanMessage, System
 from langchain_goodfire.chat_model import (
     ChatGoodfire,
     format_for_goodfire,
-    format_for_langchain,
 )
 
 os.environ["GOODFIRE_API_KEY"] = "test_key"
@@ -65,19 +64,6 @@ def test_goodfire_initialization() -> None:
 def test_message_formatting(messages: List[BaseMessage], expected: List[dict]) -> None:
     result = format_for_goodfire(messages)
     assert result == expected
-
-
-def test_format_for_langchain() -> None:
-    message = {"role": "assistant", "content": "Hello there!"}
-    result = format_for_langchain(message)
-    assert isinstance(result, AIMessage)
-    assert result.content == "Hello there!"
-
-
-def test_format_for_langchain_invalid_role() -> None:
-    message = {"role": "user", "content": "Hello"}
-    with pytest.raises(AssertionError, match="Expected role 'assistant'"):
-        format_for_langchain(message)
 
 
 def test_invalid_message_type() -> None:
