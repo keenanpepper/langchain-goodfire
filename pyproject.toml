@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "langchain-goodfire"
-version = "0.2.0"
+version = "0.2.1"
 authors = [
     { name = "Keenan Pepper", email = "keenan@ae.studio" },
 ]
@@ -20,6 +20,7 @@ dependencies = [
     "langchain-core>=0.3.32",
     "goodfire>=0.3.4",
     "transformers>=4.48.1",
+    "jinja2>=3.1.5", # for the chat templates in transformers.AutoTokenizer
 ]
 
 [project.urls]
