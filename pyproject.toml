@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "langchain-goodfire"
-version = "0.1.0"
+version = "0.2.0"
 authors = [
     { name = "Keenan Pepper", email = "keenan@ae.studio" },
 ]
@@ -18,7 +18,8 @@ classifiers = [
 ]
 dependencies = [
     "langchain-core>=0.3.32",
-    "goodfire",
+    "goodfire>=0.3.4",
+    "transformers>=4.48.1",
 ]
 
 [project.urls]
@@ -28,4 +29,6 @@ dependencies = [
 [project.optional-dependencies]
 dev = [
     "pytest>=7.0.0",
+    "langchain-tests==0.3.10",
+    "python-dotenv",
 ]
