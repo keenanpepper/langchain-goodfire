@@ -73,3 +73,16 @@ def test_invalid_message_type() -> None:
 
     with pytest.raises(ValueError, match="Unknown message type"):
         format_for_goodfire([CustomMessage(content="test")])
+
+
+def test_model_kwarg_handling() -> None:
+    """Test that model parameter is handled correctly when passed as kwarg."""
+    base_variant = get_valid_variant()
+    llm = ChatGoodfire(model=base_variant)
+
+    # This should not raise a TypeError about duplicate model parameter
+    with pytest.raises(Exception) as exc_info:
+        # Using run_sync to execute async code in sync context
+        llm._generate([HumanMessage(content="test")], model=base_variant)
+
+    assert "multiple values for keyword argument 'model'" not in str(exc_info.value)
