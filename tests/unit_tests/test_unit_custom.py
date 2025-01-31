@@ -29,11 +29,7 @@ def test_goodfire_model_param() -> None:
 def test_goodfire_initialization() -> None:
     """Test goodfire initialization with API key."""
     llm = ChatGoodfire(model=get_valid_variant(), goodfire_api_key="test_key")
-    # Check that clients were initialized with the API key
-    assert llm.sync_client is not None
     assert llm.async_client is not None
-    # Could also verify the clients were initialized with correct key if the client
-    # exposes that information (though it probably shouldn't for security reasons)
 
 
 @pytest.mark.parametrize(

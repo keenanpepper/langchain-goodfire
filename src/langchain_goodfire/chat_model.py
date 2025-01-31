@@ -42,7 +42,6 @@ def format_for_goodfire(messages: List[BaseMessage]) -> List[dict]:
 class ChatGoodfire(BaseChatModel):
     """Goodfire chat model."""
 
-    sync_client: Optional[goodfire.Client] = None
     async_client: Optional[goodfire.AsyncClient] = None
     model: goodfire.Variant = None
     _tokenizer: Optional[PreTrainedTokenizerBase] = None
@@ -84,7 +83,6 @@ class ChatGoodfire(BaseChatModel):
 
         # Initialize clients with the validated API key and remove the key
         api_key = goodfire_api_key.get_secret_value()
-        values["sync_client"] = goodfire.Client(api_key=api_key)
         values["async_client"] = goodfire.AsyncClient(api_key=api_key)
 
         # Remove the API key from values so it's not stored
