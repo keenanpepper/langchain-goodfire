@@ -51,7 +51,13 @@ pip install -e .
 Run tests using pytest:
 
 ```bash
-pytest tests/
+# run unit tests without network access
+poetry run pytest --disable-socket --allow-unix-socket --asyncio-mode=auto tests/unit_tests
+```
+
+```bash
+# run integration tests
+poetry run pytest --asyncio-mode=auto tests/integration_tests
 ```
 
 ## License
