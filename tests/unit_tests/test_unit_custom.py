@@ -1,6 +1,7 @@
 """Test Goodfire Chat API wrapper."""
 
 import os
+import uuid
 from typing import List
 
 import goodfire
@@ -82,3 +83,26 @@ def test_model_kwarg_handling() -> None:
         llm._generate([HumanMessage(content="test")], model=base_variant)
 
     assert "multiple values for keyword argument 'model'" not in str(exc_info.value)
+
+
+def test_identifying_params_same_variant() -> None:
+    """Test that identical variants produce the same identifying parameters."""
+    variant1 = get_valid_variant()
+    variant2 = get_valid_variant()
+
+    llm1 = ChatGoodfire(model=variant1)
+    llm2 = ChatGoodfire(model=variant2)
+
+    assert llm1._identifying_params == llm2._identifying_params
+
+
+def test_identifying_params_different_variants() -> None:
+    """Test that different variants produce different identifying parameters."""
+    base_variant = get_valid_variant()
+    modified_variant = get_valid_variant()
+    modified_variant.set(goodfire.Feature(uuid.uuid4(), "test_feature", 0), 1.5)
+
+    llm1 = ChatGoodfire(model=base_variant)
+    llm2 = ChatGoodfire(model=modified_variant)
+
+    assert llm1._identifying_params != llm2._identifying_params

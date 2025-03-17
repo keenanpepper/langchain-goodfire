@@ -68,6 +68,13 @@ class ChatGoodfire(BaseChatModel):
         # Just return the json I guess?
         return json.dumps(self.model.json())
 
+    @property
+    def _identifying_params(self) -> Dict[str, Any]:
+        """Get the identifying parameters."""
+        return {
+            "model": self.model.json(),  # Include the full variant configuration
+        }
+
     @model_validator(mode="before")
     @classmethod
     def validate_environment(cls, values: Dict[str, Any]) -> Dict[str, Any]:
